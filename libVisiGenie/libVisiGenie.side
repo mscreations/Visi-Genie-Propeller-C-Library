@@ -1,0 +1,20 @@
+libVisiGenie.cpp
+-I C:/Users/Jon/Documents/SimpleIDE/Learn/Simple Libraries/Text Devices/libfdserial
+-L C:/Users/Jon/Documents/SimpleIDE/Learn/Simple Libraries/Text Devices/libfdserial
+-I C:/Users/Jon/Documents/SimpleIDE/Learn/Simple Libraries/Utility/libmstimer
+-L C:/Users/Jon/Documents/SimpleIDE/Learn/Simple Libraries/Utility/libmstimer
+Genie.c
+Genie.h
+-I ../../../Documents/SimpleIDE/Learn/Simple Libraries/Utility/libsimpletools
+-L ../../../Documents/SimpleIDE/Learn/Simple Libraries/Utility/libsimpletools
+-I ../../../Documents/SimpleIDE/Learn/Simple Libraries/Text Devices/libsimpletext
+-L ../../../Documents/SimpleIDE/Learn/Simple Libraries/Text Devices/libsimpletext
+>compiler=C++
+>memtype=cmm main ram compact
+>optimize=-Os
+>-m32bit-doubles
+>-fno-exceptions
+>-fno-rtti
+>-create_library
+>linker::-lfdserial -lmstimer -lsimpletools -lsimpletext
+>BOARD::ACTIVITYBOARD
