@@ -274,7 +274,7 @@ int genieDoEvents (void)
         default:
         // error, bad character
         return GENIE_EVENT_RXCHAR;
-]      }
+     }
 
     case GENIE_LINK_RXREPORT:    // already receiving report
     case GENIE_LINK_RXEVENT:    // already receiving event
