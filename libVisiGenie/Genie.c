@@ -613,7 +613,7 @@ void genieAttachEventHandler (genieUserEventHandlerPtr handler)
 //      The char if there was one to get
 // Sets:  _genieError with any errors encountered
 //
-int _genieGetchar() 
+int _genieGetchar () 
 {
   _genieError = ERROR_NONE;
 
@@ -630,22 +630,37 @@ int _genieGetchar()
 // Output the supplied character to the Genie display over 
 // the selected serial port
 //
-void _geniePutchar(int c) 
+void _geniePutchar (int c) 
 {
   fdserial_txChar(term, c);
 }
 
 //////////////////////////////////// genieSetup /////////////////////////////////////////
-
-int genieBegin(int rxpin, int txpin, int rstpin, int baud) 
+//
+// rxpin - Serial Receive from 4d Display
+// txpin - Serial Transmit to 4d Display
+// rstpin - Pin connected to reset on 4D display. If not connected or used, set to -1
+// rstTime - # of ms to keep reset line low. 
+// baud - Baud rate to connect to 4D Display.
+//
+int genieBegin (int rxpin, int txpin, int rstpin, int rstTime, int baud)
 {
   term = fdserial_open(rxpin, txpin, 0, baud);
 
   mstime_start();
   
-  set_direction(rstpin, 0);
-  low(rstpin);
-  pause(500);
-  high(rstpin);
+  if (rstpin > 0)
+  {
+    set_direction(rstpin, 0);
+    low(rstpin);
+    pause(rstTime);
+    high(rstpin);
+  }
   return true;
+}  
+
+int genieBegin (int rxpin, int txpin, int rstpin, int baud) 
+{
+  return genieBegin(rxpin, txpin, rstpin, 10, baud);
 }
+
