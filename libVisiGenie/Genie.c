@@ -56,6 +56,10 @@ bool    _genieEnqueueEvent    (int * data);
 // Display Serial Terminal
 static fdserial *term;
 
+// cog stack
+unsigned int stack[(160 + (50 * 4)) / 4];
+static int cog;
+
 //////////////////////////////////////////////////////////////
 // A structure to hold up to MAX_GENIE_EVENTS events receive
 // from the display
@@ -635,6 +639,14 @@ void _geniePutchar (int c)
   fdserial_txChar(term, c);
 }
 
+void runMonitor(void *par)
+{
+  while(1)
+  {
+    genieDoEvents();
+  }
+}
+
 //////////////////////////////////// genieSetup /////////////////////////////////////////
 //
 // rxpin - Serial Receive from 4d Display
@@ -646,6 +658,12 @@ void _geniePutchar (int c)
 int genieBegin (int rxpin, int txpin, int rstpin, int rstTime, int baud)
 {
   term = fdserial_open(rxpin, txpin, 0, baud);
+
+  //dbgterm = serial_open(31,30,0,115200);
+
+  cog = cogstart(&runMonitor, NULL, stack, sizeof(stack));
+
+  //writeStr(dbgterm, (char *) "Starting...\n");
 
   mstime_start();
   
@@ -662,5 +680,10 @@ int genieBegin (int rxpin, int txpin, int rstpin, int rstTime, int baud)
 int genieBegin (int rxpin, int txpin, int rstpin, int baud) 
 {
   return genieBegin(rxpin, txpin, rstpin, 10, baud);
+}
+
+void genieStop()
+{
+  
 }
 
